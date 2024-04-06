@@ -2,7 +2,10 @@
 // @name     binki-bigtime-net-timer-quick-unpause
 // @version  1.0.0
 // @grant    none
-// @match https://intuit.bigtime.net/Bigtime/Entry2
+// @match https://intuit.bigtime.net/bigtime
+// @match https://intuit.bigtime.net/bigtime/*
+// @match https://intuit.bigtime.net/Bigtime
+// @match https://intuit.bigtime.net/Bigtime/*
 // @require https://github.com/binki/binki-userscript-when-element-changed-async/raw/master/binki-userscript-when-element-changed-async.js
 // ==/UserScript==
 
