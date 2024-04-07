@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name     binki-bigtime-net-timer-quick-unpause
+// @homepageURL https://github.com/binki/binki-bigtime-net-timer-quick-unpause
 // @version  1.0.1
 // @grant    none
 // @match https://intuit.bigtime.net/bigtime
