@@ -11,34 +11,25 @@
 // ==/UserScript==
 
 (async () => {
-  const timerMenuList = await (async () => {
-    while (true) {
-      const timerMenuList = document.querySelector('.timerMenu > ul.list');
-      if (timerMenuList) return timerMenuList;
-      await whenElementChangedAsync(document.body);
-    }
-  })();
-  console.log('found timerMenu list', timerMenuList);
-  const timerMenuEdit = await (async () => {
-    while (true) {
-  	  const timerMenuEdit = document.querySelector('.timerMenu > ul.edit');
-      if (timerMenuEdit) return timerMenuEdit;
-      await whenElementChangedAsync(document.body);
-    }
-  })();
-  console.log('found timerMenu edit', timerMenuEdit);
-  timerMenuList.addEventListener('click', e => {
-    const button = (() => {
-      let target = e.target;
-      while (target && target.nodeName.toLowerCase() !== 'button') target = target.parentNode;
-      return target;
-    })();
-    console.log('sought under ', e.target, ' and found ', button);
-    if (!button) return;
-    // A button in the menu was clicked. So do followup action.
-    console.log('detected action click, following up with auto-click');
-    (async () => {
-      while (document.querySelector('.timerMenu > ul.edit.ng-hide')) {
+  // Multiple instances can be created in the document (see #2), so don’t bother
+  // with identifying elements ahead of time.
+  document.body.addEventListener('click', e => {
+    // Wait specifically for a click on the button. If the user clicks on the
+    // entry itself instead of the button, they should be presented the edit
+    // screen in order to be able to fix things.
+    const buttonGroup = e.target.closest('.timerMenu > ul.list div.btn-group');
+    if (buttonGroup) (async () => {
+      console.log('detected action click, following up with auto-click');
+      const timerMenuSelector = '.timerMenu';
+      const timerMenu = buttonGroup.closest(timerMenuSelector);
+      if (!timerMenu) {
+        console.error({
+          buttonGroup,
+        });
+        throw new Error(`Unable to find ${timerMenuSelector} as an ancestor of the buttonGroup`);
+      }
+      const timerMenuEdit = timerMenu.querySelector('.timerMenu > ul.edit');
+      while (timerMenuEdit.matches('.ng-hide')) {
         await whenElementChangedAsync(timerMenuEdit);
       }
       console.log('edit screen loaded, auto-clicking…');
