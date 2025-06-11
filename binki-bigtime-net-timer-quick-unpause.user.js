@@ -3,14 +3,19 @@
 // @homepageURL https://github.com/binki/binki-bigtime-net-timer-quick-unpause
 // @version  1.1.0
 // @grant    none
-// @match https://intuit.bigtime.net/bigtime
-// @match https://intuit.bigtime.net/bigtime/*
-// @match https://intuit.bigtime.net/Bigtime
-// @match https://intuit.bigtime.net/Bigtime/*
+// @match https://*.bigtime.net/bigtime
+// @match https://*.bigtime.net/bigtime/*
+// @match https://*.bigtime.net/Bigtime
+// @match https://*.bigtime.net/Bigtime/*
 // @require https://github.com/binki/binki-userscript-when-element-changed-async/raw/master/binki-userscript-when-element-changed-async.js
 // ==/UserScript==
 
 (async () => {
+  // We are forced to use wildcard @match above but we don’t want to match irrelevant subdomains.
+  // The only subdomain which has a fixed alternative purpose that we know about so far is “www.bigtime.net”,
+  // so test for that. See #3.
+  if (/^[^:]+:\/\/www\./.test(document.URL)) return;
+
   // Multiple instances can be created in the document (see #2), so don’t bother
   // with identifying elements ahead of time.
   document.body.addEventListener('click', e => {
